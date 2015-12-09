@@ -14,20 +14,7 @@ from blog.models import User
 
 from flask.ext.migrate import Migrate, MigrateCommand
 from blog.database import Base
-#import flask
-#import flask_resize
 
-#resize = flask_resize.Resize()
-
-#@manager.command
-#def create_app(**config_values):
-#    app = flask.Flask()
-#    app.config.update(**config_values)
-#    resize.init_app(app)
-#    return app
-
-# And later on...
-#app = create_app(RESIZE_URL='http://s14.postimg.org/60aamxeq9/chamonix.png')
 @manager.command
 def adduser():
     input = raw_input
@@ -62,9 +49,6 @@ def seed():
 def run():
     port = int(os.environ.get('PORT', 8080))
     app.run(host='0.0.0.0', port=port)
-
-
-
 
 class DB(object):
     def __init__(self, metadata):

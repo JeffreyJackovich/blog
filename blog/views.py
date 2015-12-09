@@ -11,6 +11,8 @@ from werkzeug.security import check_password_hash
 from .models import User
 from flask.ext.login import login_required
 from flask.ext.login import current_user
+from flask.ext.login import logout_user
+
 
 @app.route("/login", methods=["GET"])
 def login_get():
@@ -27,6 +29,16 @@ def login_post():
 
     login_user(user)
     return redirect(request.args.get('next') or url_for("posts"))
+
+@app.route('/logout')
+def logout():
+#    session.pop('logged_in', None)
+    logout_user()
+    flash('You were logged out')
+    return redirect(url_for('login_get'))
+
+#def logout_user
+#flask.ext.login.logout_user()
 
 @app.route("/")
 @app.route("/page/<int:page>")
@@ -69,5 +81,5 @@ def add_post_post():
     )
     session.add(post)
     session.commit()
-    return redirect(url_for("posts"))
+    return redirect(url_for("add_post_get"))
 
