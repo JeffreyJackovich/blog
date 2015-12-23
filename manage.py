@@ -37,7 +37,7 @@ def adduser():
 @manager.command
 def seed():
     content = """Test blog content..."""
-    for i in range(10):
+    for i in range(0):
         post = Post(
             title="Test Post #{}".format(i),
             content=content

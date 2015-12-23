@@ -11,7 +11,7 @@ body {
 
 .masthead {
   padding: 2em 0;
-  background-image: url('http://s12.postimg.org/fln4xqi3h/chamonix_1600_1200.png');
+  background-image: url('http://s27.postimg.org/d0zfsghwj/chamonix_blog_photo.jpg');
   background-color: #33449c;
   background-repeat: no-repeat;
   background-size: cover;
@@ -19,7 +19,7 @@ body {
   border-left: solid 2em #FFFFFF;
   border-right: solid 2em #FFFFFF;
   border-top: solid 2em #FFFFFF;
-  padding-bottom: 15%;
+  padding-bottom: 40%;
 }
 
 .masthead-intro {
@@ -67,4 +67,9 @@ body {
 
 section > h1 {
   margin-top: 2em;
+}
+
+div.metadata {
+  margin-top: 20px;
+  font-size: 1.5em;
 }

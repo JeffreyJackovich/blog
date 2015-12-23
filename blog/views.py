@@ -12,8 +12,22 @@ from .models import User
 from flask.ext.login import login_required
 from flask.ext.login import current_user
 from flask.ext.login import logout_user
+from flask import make_response 
 
 
+#from flask import redirect, url_for, render_template
+
+#from . import app
+#from .forms import EmailForm
+#from .models import User
+#from .util import send_email, ts
+
+#from flask import redirect, url_for, render_template
+
+#from . import app, db
+#from .forms import PasswordForm
+#from .models import User
+#from .util import ts
 @app.route("/login", methods=["GET"])
 def login_get():
     return render_template("login.html")
@@ -83,3 +97,59 @@ def add_post_post():
     session.commit()
     return redirect(url_for("add_post_get"))
 
+@app.route('/reset-password', methods=('GET', 'POST',))
+def forgot_password():
+    token = request.args.get('token',None)
+    form = ResetPassword(request.form) #form
+    if form.validate_on_submit():
+        email = form.email.data
+        user = User.query.filter_by(email=email).first()
+        if user:
+            token = user.get_token()
+            print token
+    return render_template('users/reset.html', form=form)
+
+@app.route('/send-mail/')
+def send_mail():
+	try:
+		msg = Message("Send Mail Tutorial!",
+		  sender="yoursendingemail@gmail.com",
+		  recipients=["recievingemail@email.com"])
+		msg.body = "Yo!\nHave you heard the good word of Python???"           
+		mail.send(msg)
+		return 'Mail sent!'
+	except Exception, e:
+		return(str(e)) 
+
+
+@app.route('/reset/<token>', methods=["GET", "POST"])
+def reset_with_token(token):
+    try:
+        email = ts.loads(token, salt="recover-key", max_age=86400)
+    except:
+        abort(404)
+
+    form = PasswordForm()
+
+    if form.validate_on_submit():
+        user = User.query.filter_by(email=email).first_or_404()
+
+        user.password = form.password.data
+
+        db.session.add(user)
+        db.session.commit()
+
+        return redirect(url_for('signin'))
+
+    return render_template('reset_with_token.html', form=form, token=token)
+
+@app.route("/docs/<id>")
+def get_resume():
+    if id is not None:
+        binary_pdf = get_binary_pdf_data_from_database(id=id)
+        response = make_response(binary_pdf)
+        response.headers['Content-Type'] = 'application/pdf'
+        response.headers['Content-Disposition'] = \
+            'inline; filename=%s.pdf' % 'resume_12_15_15.pdf'
+            
+        return response
